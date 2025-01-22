@@ -39,6 +39,7 @@ public class UserController {
     public String login(LoginRequestDto requestDto, HttpServletResponse res) {
 
         try {
+            System.out.println("내가 정의한 userController");
             userService.login(requestDto, res);
         } catch (Exception e) {
             return "redirect:/api/user/login-page?error";
