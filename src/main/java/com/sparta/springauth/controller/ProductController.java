@@ -2,8 +2,11 @@ package com.sparta.springauth.controller;
 
 import ch.qos.logback.core.model.Model;
 import com.sparta.springauth.entity.User;
+import com.sparta.springauth.entity.UserRoleEnum;
 import com.sparta.springauth.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,4 +23,16 @@ public class ProductController {
         System.out.println("user.getUsername() = " + user.getUsername());
         return "redirect:/";
     }
+
+    @Secured(UserRoleEnum.Authority.ADMIN) // 관리자용
+    @GetMapping("/products/secured")
+    public String getProductsByAdmin(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        System.out.println("userDetails.getUsername() = " + userDetails.getUsername());
+        for (GrantedAuthority authority : userDetails.getAuthorities()) {
+            System.out.println("authority.getAuthority() = " + authority.getAuthority());
+        }
+
+        return "redirect:/";
+    }
+
 }
